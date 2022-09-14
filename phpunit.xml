@@ -8,6 +8,9 @@
         <testsuite name="Domain">
             <directory suffix="Test.php">./tests/Domain</directory>
         </testsuite>
+        <testsuite name="feature">
+            <directory suffix="Test.php">./tests/Feature</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

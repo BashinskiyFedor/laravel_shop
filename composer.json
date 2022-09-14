@@ -21,6 +21,7 @@
         "spatie/laravel-enum": "^2.4",
         "spatie/laravel-event-sourcing": "^5.0-dev",
         "spatie/laravel-model-states": "^2.0",
+        "spatie/laravel-query-builder": "*",
         "spatie/period": "^1.5"
     },
     "require-dev": {

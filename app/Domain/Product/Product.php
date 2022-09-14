@@ -7,6 +7,10 @@ use Database\Factories\ProductFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Builder;
+use App\Domain\Category\Category;
+use App\Domain\City\City;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Product extends Model
 {
@@ -21,6 +25,16 @@ class Product extends Model
     protected static function newFactory(): ProductFactory
     {
         return new ProductFactory();
+    }
+
+    public function categories() : BelongsToMany
+    {
+        return $this->belongsToMany(Category::class);
+    }
+
+    public function cities() : BelongsToMany
+    {
+        return $this->belongsToMany(City::class);
     }
 
     public function getUuid(): string
@@ -51,5 +65,20 @@ class Product extends Model
     public function hasAvailableInventory(int $requestedAmount): bool
     {
         return $this->inventory->amount >= $requestedAmount;
+    }
+
+    public function scopeCategoryId(Builder $query, Category $category) : Builder
+    {
+        return $query->whereHas('categories', fn($q) => $q->where('categories.id', $category->id));
+    }
+
+    // public function scopeCityId(Builder $query, City $city) : Builder
+    // {
+    //     return $query->whereHas('cities', fn($q) => $q->where('cities.id', $city->id));
+    // }
+
+    public function scopeCities(Builder $query, ...$cities) : Builder
+    {
+        return $query->whereHas('cities', fn($q) => $q->whereIn('cities.id', $cities));
     }
 }
